@@ -1,11 +1,25 @@
 def carica_da_file(file_path):
     """Carica i libri dal file"""
     # TODO
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file_biblio:
 
+            lista_biblioteca = []
+            for libro in file_biblio:
+                libro= libro.strip().split(',')
+                diz_libro = {libro[0]: libro[1:5]}
+                lista_biblioteca.append(diz_libro)
+            return lista_biblioteca
+    except FileNotFoundError:
+        print('File not found')
+        return None
 
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
     """Aggiunge un libro nella biblioteca"""
     # TODO
+    diz_new_book={titolo: [autore, anno, anno, pagine, sezione]}
+    biblioteca.append(diz_new_book)
+    return biblioteca
 
 
 def cerca_libro(biblioteca, titolo):
@@ -35,7 +49,7 @@ def main():
         if scelta == "1":
             while True:
                 file_path = input("Inserisci il path del file da caricare: ").strip()
-                biblioteca = carica_da_file(file_path)
+                biblioteca = carica_da_file('biblioteca.csv')
                 if biblioteca is not None:
                     break
 
