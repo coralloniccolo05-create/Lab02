@@ -1,3 +1,4 @@
+import json
 def carica_da_file(file_path):
     """Carica i libri dal file"""
     # TODO
@@ -16,10 +17,38 @@ def carica_da_file(file_path):
 
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
     """Aggiunge un libro nella biblioteca"""
-    # TODO
-    diz_new_book={titolo: [autore, anno, anno, pagine, sezione]}
-    biblioteca.append(diz_new_book)
-    return biblioteca
+    #TODO
+    try:
+        with open(file_path, 'a') as biblioteca_file:
+            # Verifica se la sezione esiste
+            for book in biblioteca:
+                if sezione not in book:
+                    raise KeyError("Sezione non esistente")
+
+            # Verifica se il titolo è già presente
+                if titolo in book:
+                    raise ValueError("Titolo già presente")
+
+            # Crea il nuovo libro
+            diz_new_book = {titolo: [autore, anno, pagine, sezione]}
+            biblioteca.append(diz_new_book)
+
+            # Scrive su file
+
+            biblioteca_file.write(str(diz_new_book) + '\n')
+
+        return diz_new_book
+
+    except FileNotFoundError:
+        print("Errore: file non trovato.")
+        return None
+    except KeyError:
+        print("Errore: sezione non esistente.")
+        return None
+    except ValueError:
+        print("Errore: titolo già presente.")
+        return None
+
 
 
 def cerca_libro(biblioteca, titolo):
